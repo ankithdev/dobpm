@@ -1,8 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.dobpmproject</groupId>
   <artifactId>dobpmartifact</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.5</version>
   <name>dobpmproject</name>
   <description>This is a test app.</description>
   <build>
@@ -15,7 +15,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-		</plugins>
+			 </plugins>
 	</build>
 	<dependencies>
 		<dependency>
@@ -24,4 +24,11 @@
 			<version>4.12</version>
 		</dependency>
 </dependencies>
+<distributionManagement>
+	<repository>
+		<id>deploymentRepo</id>
+		<name>Internal Releases</name>
+		<url>http://172.16.0.56:8081/repository/dobpm-releases/</url>
+	</repository>
+</distributionManagement>
 </project>
