@@ -57,4 +57,10 @@
 			<version>4.12</version>
 		</dependency>
 </dependencies>
-<distributionManagement><repository><id>deploymentRepo</id><name>Internal Releases</name><url>http://172.16.0.56:8081/repository/dobpm-releases/</url></repository></distributionManagement></project>
+<distributionManagement>
+	<repository>
+		<id>deploymentRepo</id>
+		<name>Internal Releases</name><url>http://172.16.0.56:8081/repository/dobpm-releases/</url>
+	</repository>
+</distributionManagement>
+</project>
