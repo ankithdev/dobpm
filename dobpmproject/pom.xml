@@ -60,7 +60,8 @@
 <distributionManagement>
 	<repository>
 		<id>deploymentRepo</id>
-		<name>Internal Releases</name><url>http://172.16.0.56:8081/repository/dobpm-releases/</url>
+		<name>Internal Releases</name>
+		<url>http://172.16.0.56:8081/repository/dobpm-releases/</url>
 	</repository>
 </distributionManagement>
 </project>
