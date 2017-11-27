@@ -15,42 +15,6 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.7</version>
-            <executions>
-                <execution>
-                    <phase>package</phase>
-                    <configuration>
-                        <target>
-                        <property name="version" value="${project.version}"/>
-                            <!-- maven does not support defining more than one target... -->
-                            <!-- https://jira.codehaus.org/browse/MANTRUN-86 -->
-                            <ant antfile="${project.basedir}/src/main/resources/ant/copy-zips.xml" />
-                        </target>
-                    </configuration>
-                    <goals>
-                        <goal>run</goal>
-                    </goals>
-                </execution>
-            </executions>
-            <dependencies>
-                <dependency>
-                    <groupId>ant-contrib</groupId>
-                    <artifactId>ant-contrib</artifactId>
-                    <version>1.0b3</version>
-                    <exclusions>
-                        <exclusion>
-                            <artifactId>ant</artifactId>
-                            <groupId>ant</groupId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-            </dependencies>
-            <configuration>
-            </configuration>
-        </plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -60,11 +24,4 @@
 			<version>4.12</version>
 		</dependency>
 </dependencies>
-<distributionManagement>
-    <repository>
-        <id>deploymentRepo</id>
-        <name>Internal Releases</name>
-        <url>http://172.16.0.56:8081/repository/dobpm-releases/</url>
-    </repository>
-</distributionManagement>
 </project>
