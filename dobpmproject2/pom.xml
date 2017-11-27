@@ -15,24 +15,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-		<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/resources/assembly/assembly.xml</descriptor>
-							</descriptors>
-						</configuration>
-						<id>create-distribution</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-</plugin></plugins>
+		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
@@ -41,4 +24,4 @@
 			<version>4.12</version>
 		</dependency>
 </dependencies>
-<distributionManagement><repository><id>deploymentRepo</id><name>Internal Releases</name><url>http://172.16.0.56:8081/repository/dobpm-releases/</url></repository></distributionManagement></project>
+</project>
