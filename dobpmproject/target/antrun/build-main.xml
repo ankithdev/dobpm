@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="maven-antrun-" default="main"  >
 <target name="main">
-  <property name="version" value="1.0.2"/>
-  <ant antfile="D:\LVPEI-WebApp\myartifactid/src/main/resources/ant/copy-zips.xml"/>
+  <property name="version" value="1.0.5"/>
+  <ant antfile="C:\Users\Techrains\Documents\do-bpm\do-bpm test\dobpm\dobpmproject/src/main/resources/ant/copy-zips.xml"/>
 </target>
 </project>
