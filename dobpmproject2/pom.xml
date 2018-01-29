@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.newproject2</groupId>
   <artifactId>dobpmartifact2</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <name>dobpmproject2</name>
   <description>This is a test app.</description>
   <build>
