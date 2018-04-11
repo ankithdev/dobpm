@@ -29,7 +29,7 @@
 			   
                <configuration>
                    <descriptor>src/assembly/bin.xml</descriptor>
-                   <finalName>testApp</finalName>
+                   <finalName>Employee Hiring App</finalName>
                    <outputDirectory>${project.basedir}/target</outputDirectory>
                </configuration>
                <executions>
