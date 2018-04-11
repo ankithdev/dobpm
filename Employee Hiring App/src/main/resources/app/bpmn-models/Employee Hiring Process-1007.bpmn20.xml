@@ -1,0 +1,443 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef" xmlns:modeler="http://activiti.com/modeler" modeler:version="1.0en" modeler:exportDateTime="20180411072642151" modeler:modelId="1007" modeler:modelVersion="18" modeler:modelLastUpdated="1523410146449">
+  <process id="EmployeeHiringProcess" name="Employee Hiring Process" isExecutable="true">
+    <documentation>This process is to screen candidate for scheduling interviews and processing them</documentation>
+    <extensionElements>
+      <modeler:executionvariables xmlns:modeler="http://activiti.com/modeler" modeler:variableName="ReviewerComments" modeler:variableType="string"/>
+      <modeler:executionvariables xmlns:modeler="http://activiti.com/modeler" modeler:variableName="ReviewerAction" modeler:variableType="string"/>
+      <modeler:executionvariables xmlns:modeler="http://activiti.com/modeler" modeler:variableName="interviewdatetime" modeler:variableType="string"/>
+    </extensionElements>
+    <startEvent id="Start" name="Start" activiti:formKey="1006">
+      <documentation>start Process for candidate hirirng</documentation>
+      <extensionElements>
+        <modeler:form-reference-id><![CDATA[1006]]></modeler:form-reference-id>
+        <modeler:form-reference-name><![CDATA[Hiring  Start Form]]></modeler:form-reference-name>
+        <modeler:editor-resource-id><![CDATA[startEvent1]]></modeler:editor-resource-id>
+      </extensionElements>
+    </startEvent>
+    <userTask id="InitialScreening" name="Screening of Resume" activiti:async="true" activiti:exclusive="false" activiti:candidateGroups="4004" activiti:formKey="1001">
+      <documentation>verify Resume for suitable candidate</documentation>
+      <extensionElements>
+        <activiti:executionListener event="start" class="com.activiti.runtime.activiti.ContentProcessorExecutionListener">
+          <activiti:field name="externalContentHandler">
+            <activiti:expression><![CDATA[${externalContentHandler}]]></activiti:expression>
+          </activiti:field>
+        </activiti:executionListener>
+        <modeler:allow-send-email><![CDATA[true]]></modeler:allow-send-email>
+        <modeler:form-reference-id><![CDATA[1001]]></modeler:form-reference-id>
+        <modeler:form-reference-name><![CDATA[Screening Form]]></modeler:form-reference-name>
+        <modeler:group-info-name-4004><![CDATA[HR]]></modeler:group-info-name-4004>
+        <modeler:group-info-externalid-4004><![CDATA[cn=HR,ou=groups,dc=alfresco,dc=com]]></modeler:group-info-externalid-4004>
+        <modeler:activiti-idm-candidate-group><![CDATA[true]]></modeler:activiti-idm-candidate-group>
+        <modeler:initiator-can-complete><![CDATA[false]]></modeler:initiator-can-complete>
+        <modeler:variablesMapping>
+          <modeler:mappedVariable><![CDATA[comments]]></modeler:mappedVariable>
+          <modeler:outProcessVariable><![CDATA[ReviewerComments]]></modeler:outProcessVariable>
+          <modeler:inVariableType><![CDATA[formField]]></modeler:inVariableType>
+          <modeler:outVariableType><![CDATA[restResponse]]></modeler:outVariableType>
+          <modeler:typeOfMapping><![CDATA[outputMap]]></modeler:typeOfMapping>
+        </modeler:variablesMapping>
+        <modeler:editor-resource-id><![CDATA[sid-D935DFB6-BCED-4F8A-A06B-8A1989A09623]]></modeler:editor-resource-id>
+        <modeler:ignore-listener-on-import><![CDATA[com.activiti.runtime.activiti.ContentProcessorExecutionListener]]></modeler:ignore-listener-on-import>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="ResumeQualified" name="Resume qualified?">
+      <documentation>If Resume is qualified then forward to next task
+If not  then reject</documentation>
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-F85D5791-5CB5-45CE-A827-467A1F7B434F]]></modeler:editor-resource-id>
+      </extensionElements>
+    </exclusiveGateway>
+    <userTask id="scheduleInterview" name="Schedule meeting with candidate" activiti:candidateGroups="4004" activiti:formKey="1003">
+      <documentation>schedule interview date and time for candidate</documentation>
+      <extensionElements>
+        <activiti:taskListener event="complete" class="com.techsophy.EmailSchedular.InterviewScheduler"/>
+        <modeler:allow-send-email><![CDATA[true]]></modeler:allow-send-email>
+        <modeler:form-reference-id><![CDATA[1003]]></modeler:form-reference-id>
+        <modeler:form-reference-name><![CDATA[Schedule Interview Form]]></modeler:form-reference-name>
+        <modeler:group-info-name-4004><![CDATA[HR]]></modeler:group-info-name-4004>
+        <modeler:group-info-externalid-4004><![CDATA[cn=HR,ou=groups,dc=alfresco,dc=com]]></modeler:group-info-externalid-4004>
+        <modeler:activiti-idm-candidate-group><![CDATA[true]]></modeler:activiti-idm-candidate-group>
+        <modeler:initiator-can-complete><![CDATA[false]]></modeler:initiator-can-complete>
+        <modeler:editor-resource-id><![CDATA[sid-24B96B37-5685-4E3D-A934-A8F0DA05301F]]></modeler:editor-resource-id>
+      </extensionElements>
+    </userTask>
+    <userTask id="ResumeNotQualified" name="Application Rejected" activiti:candidateGroups="4004" activiti:formKey="4004">
+      <documentation>Application Rejected</documentation>
+      <extensionElements>
+        <modeler:allow-send-email><![CDATA[true]]></modeler:allow-send-email>
+        <modeler:form-reference-id><![CDATA[4004]]></modeler:form-reference-id>
+        <modeler:form-reference-name><![CDATA[Application Rejected]]></modeler:form-reference-name>
+        <modeler:group-info-name-4004><![CDATA[HR]]></modeler:group-info-name-4004>
+        <modeler:group-info-externalid-4004><![CDATA[cn=HR,ou=groups,dc=alfresco,dc=com]]></modeler:group-info-externalid-4004>
+        <modeler:activiti-idm-candidate-group><![CDATA[true]]></modeler:activiti-idm-candidate-group>
+        <modeler:initiator-can-complete><![CDATA[false]]></modeler:initiator-can-complete>
+        <modeler:editor-resource-id><![CDATA[sid-A557E359-733F-4F31-A6F9-261E8FAB74C0]]></modeler:editor-resource-id>
+      </extensionElements>
+    </userTask>
+    <userTask id="Interview" name="Interview Report" activiti:candidateGroups="4005" activiti:formKey="1002">
+      <documentation>interviewer Action and Comments</documentation>
+      <extensionElements>
+        <modeler:allow-send-email><![CDATA[true]]></modeler:allow-send-email>
+        <modeler:form-reference-id><![CDATA[1002]]></modeler:form-reference-id>
+        <modeler:form-reference-name><![CDATA[Interviewer Form]]></modeler:form-reference-name>
+        <modeler:group-info-name-4005><![CDATA[Interviewer]]></modeler:group-info-name-4005>
+        <modeler:group-info-externalid-4005><![CDATA[cn=Interviewer,ou=groups,dc=alfresco,dc=com]]></modeler:group-info-externalid-4005>
+        <modeler:activiti-idm-candidate-group><![CDATA[true]]></modeler:activiti-idm-candidate-group>
+        <modeler:initiator-can-complete><![CDATA[false]]></modeler:initiator-can-complete>
+        <modeler:variablesMapping>
+          <modeler:mappedVariable><![CDATA[intervieweraction]]></modeler:mappedVariable>
+          <modeler:outProcessVariable><![CDATA[ReviewerAction]]></modeler:outProcessVariable>
+          <modeler:inVariableType><![CDATA[formField]]></modeler:inVariableType>
+          <modeler:outVariableType><![CDATA[restResponse]]></modeler:outVariableType>
+          <modeler:typeOfMapping><![CDATA[outputMap]]></modeler:typeOfMapping>
+        </modeler:variablesMapping>
+        <modeler:variablesMapping>
+          <modeler:mappedVariable><![CDATA[interviewercomments]]></modeler:mappedVariable>
+          <modeler:outProcessVariable><![CDATA[ReviewerComments]]></modeler:outProcessVariable>
+          <modeler:inVariableType><![CDATA[formField]]></modeler:inVariableType>
+          <modeler:outVariableType><![CDATA[restResponse]]></modeler:outVariableType>
+          <modeler:typeOfMapping><![CDATA[outputMap]]></modeler:typeOfMapping>
+        </modeler:variablesMapping>
+        <modeler:editor-resource-id><![CDATA[sid-3F694479-88B6-44D3-8AF2-8752277E1099]]></modeler:editor-resource-id>
+      </extensionElements>
+    </userTask>
+    <inclusiveGateway id="sid-606324A5-EFC9-4A97-A3F5-169FB2479CB6" name="Selected?" default="sequence6">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-606324A5-EFC9-4A97-A3F5-169FB2479CB6]]></modeler:editor-resource-id>
+      </extensionElements>
+    </inclusiveGateway>
+    <userTask id="SelectedCandidate" name="Selected Candidate" activiti:candidateGroups="4004" activiti:formKey="1005">
+      <documentation>Selected candidate email id and interviewer comments</documentation>
+      <extensionElements>
+        <modeler:allow-send-email><![CDATA[true]]></modeler:allow-send-email>
+        <modeler:form-reference-id><![CDATA[1005]]></modeler:form-reference-id>
+        <modeler:form-reference-name><![CDATA[Selected Candidate Form]]></modeler:form-reference-name>
+        <modeler:group-info-name-4004><![CDATA[HR]]></modeler:group-info-name-4004>
+        <modeler:group-info-externalid-4004><![CDATA[cn=HR,ou=groups,dc=alfresco,dc=com]]></modeler:group-info-externalid-4004>
+        <modeler:activiti-idm-candidate-group><![CDATA[true]]></modeler:activiti-idm-candidate-group>
+        <modeler:initiator-can-complete><![CDATA[false]]></modeler:initiator-can-complete>
+        <modeler:editor-resource-id><![CDATA[sid-FE6ACC0B-4227-41C0-8DF0-1675EAA0491F]]></modeler:editor-resource-id>
+      </extensionElements>
+    </userTask>
+    <userTask id="RejectedCandidate" name="Rejected Candidate" activiti:candidateGroups="4004" activiti:formKey="1004">
+      <documentation>Rejected Candidate email and interview Comments</documentation>
+      <extensionElements>
+        <modeler:allow-send-email><![CDATA[true]]></modeler:allow-send-email>
+        <modeler:form-reference-id><![CDATA[1004]]></modeler:form-reference-id>
+        <modeler:form-reference-name><![CDATA[Rejected Candidate Form]]></modeler:form-reference-name>
+        <modeler:group-info-name-4004><![CDATA[HR]]></modeler:group-info-name-4004>
+        <modeler:group-info-externalid-4004><![CDATA[cn=HR,ou=groups,dc=alfresco,dc=com]]></modeler:group-info-externalid-4004>
+        <modeler:activiti-idm-candidate-group><![CDATA[true]]></modeler:activiti-idm-candidate-group>
+        <modeler:initiator-can-complete><![CDATA[false]]></modeler:initiator-can-complete>
+        <modeler:editor-resource-id><![CDATA[sid-2C8DBA2F-31E2-402B-B403-25B0E3908AC4]]></modeler:editor-resource-id>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="notifyCandidate" name="Notify Candidate" activiti:type="mail">
+      <documentation>Send mail to candidate regarding interview</documentation>
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${intervieweeemail}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Interview with Techsophy Pvt. Ltd]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="html">
+          <activiti:expression><![CDATA[<!DOCTYPE html>   
+<html>
+                            <head>
+                                <title>a</title>
+                            </head>
+                            <body style="background-color:grey;>
+                                <div style="width: 99%;border: 1px solid #CCC;padding: 10px">
+                                    <p style="margin-left: 24px;">Hello <b>${candiadtename}</b></p>
+									<br/>
+                                    <p style="margin-left: 24px;">We would like to invite you to come to our office to interview for the  <b>${role_LABEL}</b></p>
+                                    <p style="margin-left: 24px;">Your interview has been scheduled on <b>${interviewstartdateandtime}</b> at our office  <b>Techsophy Information Pvt. Ltd. , Hyderabad</b></p>
+									<br/>
+                                    <p style="margin-left: 24px;">For any queries, Please  contact us.</p><br/>
+  <p style="margin-left: 24px;"><b>Phone :</b>083748 88704.</p>
+  <p style="margin-left: 24px;"><b>Address :</b> 3rd Floor, Sai Pruthvi Enclave, Gutenberg IT Park, <br/>
+ Kalajyothi Road,Masjid Band, Kondapur, Hyderabad, Telangana 500084</p><br/>
+                        <br/>
+ <p style="background-color:powderblue; width:18%;" ><img alt="Image result for techsophy"  style="margin-left: 22px; margin-right: 0px; margin-top: 0px;" src="https://www.techsophy.com/wp-content/themes/techsophy/images/techsophy-logo.png"></p>
+                                </div>
+                            </body>
+                            </html>]]></activiti:expression>
+        </activiti:field>
+        <modeler:editor-resource-id><![CDATA[sid-7C18DBFF-3625-482E-A9BF-CC5569A5153E]]></modeler:editor-resource-id>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sequence3" sourceRef="scheduleInterview" targetRef="notifyCandidate">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-227B6C95-3070-4BEA-9C6A-27B1A4B99BBA]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="sequence4" sourceRef="notifyCandidate" targetRef="Interview">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-A5451F4B-4A02-4942-943D-7446CA45B6B7]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="sequence5" sourceRef="Interview" targetRef="sid-606324A5-EFC9-4A97-A3F5-169FB2479CB6">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-D017D2DE-CB22-43E6-9476-A85DEF074A98]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="sequence1" sourceRef="Start" targetRef="InitialScreening">
+      <documentation>Start Process</documentation>
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-BC98AEC5-0D5A-4D93-A400-D2396BC7D93E]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="sequence2" sourceRef="InitialScreening" targetRef="ResumeQualified">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-3046B2D7-7E30-406D-9F33-638772CFEB3B]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="ScreeningApproved" name="yes" sourceRef="ResumeQualified" targetRef="scheduleInterview">
+      <documentation>Resume is qualified for the interview</documentation>
+      <extensionElements>
+        <modeler:conditionDefinition modeler:index="0" modeler:outcomeFormId="1001" modeler:outcomeFormName="Screening Form" modeler:rightOutcomeName="Approved" modeler:operator="=="/>
+        <modeler:editor-resource-id><![CDATA[sid-08657D41-664D-4E2E-A793-FCE926EC7A75]]></modeler:editor-resource-id>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'form1001outcome') && form1001outcome == 'Approved')}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="RejectedScreening" name="No" sourceRef="ResumeQualified" targetRef="ResumeNotQualified">
+      <documentation>Resume is not qualified for the interview</documentation>
+      <extensionElements>
+        <modeler:conditionDefinition modeler:index="0" modeler:outcomeFormId="1001" modeler:outcomeFormName="Screening Form" modeler:rightOutcomeName="Rejected" modeler:operator="=="/>
+        <modeler:editor-resource-id><![CDATA[sid-47DFDE7B-0858-454E-97A0-7765FB529091]]></modeler:editor-resource-id>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'form1001outcome') && form1001outcome == 'Rejected')}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequence8" name="No" sourceRef="sid-606324A5-EFC9-4A97-A3F5-169FB2479CB6" targetRef="RejectedCandidate">
+      <extensionElements>
+        <modeler:conditionDefinition modeler:index="0" modeler:outcomeFormId="1002" modeler:outcomeFormName="Interviewer Form" modeler:rightOutcomeName="Rejected" modeler:operator="=="/>
+        <modeler:editor-resource-id><![CDATA[sid-D4448C6C-9412-46FD-B641-297CABC6B2E9]]></modeler:editor-resource-id>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'form1002outcome') && form1002outcome == 'Rejected')}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequence7" name="Yes" sourceRef="sid-606324A5-EFC9-4A97-A3F5-169FB2479CB6" targetRef="SelectedCandidate">
+      <extensionElements>
+        <modeler:conditionDefinition modeler:index="0" modeler:outcomeFormId="1002" modeler:outcomeFormName="Interviewer Form" modeler:rightOutcomeName="Selected" modeler:operator="=="/>
+        <modeler:editor-resource-id><![CDATA[sid-E9214D1C-0E78-4341-97EA-DDE06B670238]]></modeler:editor-resource-id>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'form1002outcome') && form1002outcome == 'Selected')}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequence6" name="Next Round" sourceRef="sid-606324A5-EFC9-4A97-A3F5-169FB2479CB6" targetRef="scheduleInterview">
+      <extensionElements>
+        <modeler:conditionDefinition modeler:index="0" modeler:outcomeFormId="1002" modeler:outcomeFormName="Interviewer Form" modeler:rightOutcomeName="Next Round" modeler:operator="=="/>
+        <modeler:editor-resource-id><![CDATA[sid-5D694B09-62D1-4A7C-AB0E-721D6B187B60]]></modeler:editor-resource-id>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'form1002outcome') && form1002outcome == 'Next Round')}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="saveSelectedCandiadte" name="Save Selected Candidate Resume" activiti:async="true" activiti:delegateExpression="${activiti_publishAlfrescoDelegate}">
+      <extensionElements>
+        <activiti:field name="contentSource">
+          <activiti:string><![CDATA[field]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="metaDataMapping">
+          <activiti:string><![CDATA[[]]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="documentType">
+          <activiti:string><![CDATA[cmis:document]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="documentAspects">
+          <activiti:string><![CDATA[[{"aspectName":"cm:titled"}]]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="account">
+          <activiti:string><![CDATA[alfresco-1-Alfresco-repo]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="site">
+          <activiti:string><![CDATA[hiring-process]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="publishAsType">
+          <activiti:string><![CDATA[process_initiator]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="path">
+          <activiti:string><![CDATA[02f84e5f-8576-400f-bbf9-1404938ec306]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="contentContainer">
+          <activiti:string><![CDATA[resume]]></activiti:string>
+        </activiti:field>
+        <modeler:publish-task-type><![CDATA[alfresco]]></modeler:publish-task-type>
+        <modeler:site_title><![CDATA[Hiring Process]]></modeler:site_title>
+        <modeler:path_title><![CDATA[documentLibrary > Selected Candidates]]></modeler:path_title>
+        <modeler:editor-resource-id><![CDATA[sid-5CF4DEBA-83DE-4E6C-B46B-9FC5F1751F44]]></modeler:editor-resource-id>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-F42528E1-4E00-4EC1-B5F2-AE87AC039841" sourceRef="SelectedCandidate" targetRef="saveSelectedCandiadte">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-F42528E1-4E00-4EC1-B5F2-AE87AC039841]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+    <serviceTask id="sid-5451BB7E-4799-47AE-B750-20E72745D444" name="Save Rejected Candidate Resume" activiti:async="true" activiti:delegateExpression="${activiti_publishAlfrescoDelegate}">
+      <extensionElements>
+        <activiti:field name="contentSource">
+          <activiti:string><![CDATA[field]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="documentType">
+          <activiti:string><![CDATA[cmis:document]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="documentAspects">
+          <activiti:string><![CDATA[[{"aspectName":"cm:titled"}]]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="account">
+          <activiti:string><![CDATA[alfresco-1-Alfresco-repo]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="site">
+          <activiti:string><![CDATA[hiring-process]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="publishAsType">
+          <activiti:string><![CDATA[process_initiator]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="path">
+          <activiti:string><![CDATA[e62631ac-2fd1-4642-8dda-54cf67b825ed]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="contentContainer">
+          <activiti:string><![CDATA[resume]]></activiti:string>
+        </activiti:field>
+        <modeler:publish-task-type><![CDATA[alfresco]]></modeler:publish-task-type>
+        <modeler:site_title><![CDATA[Hiring Process]]></modeler:site_title>
+        <modeler:path_title><![CDATA[documentLibrary > Rejected Candidates]]></modeler:path_title>
+        <modeler:editor-resource-id><![CDATA[sid-5451BB7E-4799-47AE-B750-20E72745D444]]></modeler:editor-resource-id>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-6284E5F4-3E3E-479F-9911-CA9666446863" sourceRef="RejectedCandidate" targetRef="sid-5451BB7E-4799-47AE-B750-20E72745D444">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-6284E5F4-3E3E-479F-9911-CA9666446863]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+    <endEvent id="sid-A1D47FE9-F2D7-4E0B-A22F-7D374AD05D7F">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-A1D47FE9-F2D7-4E0B-A22F-7D374AD05D7F]]></modeler:editor-resource-id>
+      </extensionElements>
+    </endEvent>
+    <sequenceFlow id="sid-952907EC-FE12-4D3B-AF5F-E4F010EDC09D" sourceRef="saveSelectedCandiadte" targetRef="sid-A1D47FE9-F2D7-4E0B-A22F-7D374AD05D7F">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-952907EC-FE12-4D3B-AF5F-E4F010EDC09D]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="sid-FA19FB0F-CF97-45E6-A3FC-27A245111630" sourceRef="sid-5451BB7E-4799-47AE-B750-20E72745D444" targetRef="sid-A1D47FE9-F2D7-4E0B-A22F-7D374AD05D7F">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-FA19FB0F-CF97-45E6-A3FC-27A245111630]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="sequence11" sourceRef="ResumeNotQualified" targetRef="sid-5451BB7E-4799-47AE-B750-20E72745D444">
+      <extensionElements>
+        <modeler:editor-resource-id><![CDATA[sid-52392F20-3340-42FB-8322-A7C023E73FCE]]></modeler:editor-resource-id>
+      </extensionElements>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_EmployeeHiringProcess">
+    <bpmndi:BPMNPlane bpmnElement="EmployeeHiringProcess" id="BPMNPlane_EmployeeHiringProcess">
+      <bpmndi:BPMNShape bpmnElement="Start" id="BPMNShape_Start">
+        <omgdc:Bounds height="30.0" width="30.0" x="30.0" y="205.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="InitialScreening" id="BPMNShape_InitialScreening">
+        <omgdc:Bounds height="80.0" width="100.0" x="135.0" y="180.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ResumeQualified" id="BPMNShape_ResumeQualified">
+        <omgdc:Bounds height="40.0" width="40.0" x="360.0" y="200.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scheduleInterview" id="BPMNShape_scheduleInterview">
+        <omgdc:Bounds height="86.0" width="103.0" x="444.0" y="69.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ResumeNotQualified" id="BPMNShape_ResumeNotQualified">
+        <omgdc:Bounds height="80.0" width="100.0" x="645.0" y="360.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Interview" id="BPMNShape_Interview">
+        <omgdc:Bounds height="80.0" width="100.0" x="825.0" y="75.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-606324A5-EFC9-4A97-A3F5-169FB2479CB6" id="BPMNShape_sid-606324A5-EFC9-4A97-A3F5-169FB2479CB6">
+        <omgdc:Bounds height="40.0" width="40.0" x="1020.0" y="95.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SelectedCandidate" id="BPMNShape_SelectedCandidate">
+        <omgdc:Bounds height="80.0" width="100.0" x="1170.0" y="75.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="RejectedCandidate" id="BPMNShape_RejectedCandidate">
+        <omgdc:Bounds height="80.0" width="100.0" x="1185.0" y="225.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="notifyCandidate" id="BPMNShape_notifyCandidate">
+        <omgdc:Bounds height="80.0" width="100.0" x="645.0" y="75.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="saveSelectedCandiadte" id="BPMNShape_saveSelectedCandiadte">
+        <omgdc:Bounds height="80.167483871" width="100.24219354799993" x="1410.0" y="74.9162580645"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-5451BB7E-4799-47AE-B750-20E72745D444" id="BPMNShape_sid-5451BB7E-4799-47AE-B750-20E72745D444">
+        <omgdc:Bounds height="80.16748387100006" width="100.24219354799993" x="1184.8789032260001" y="360.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-A1D47FE9-F2D7-4E0B-A22F-7D374AD05D7F" id="BPMNShape_sid-A1D47FE9-F2D7-4E0B-A22F-7D374AD05D7F">
+        <omgdc:Bounds height="28.0" width="28.0" x="1545.0" y="386.08374193550003"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-6284E5F4-3E3E-479F-9911-CA9666446863" id="BPMNEdge_sid-6284E5F4-3E3E-479F-9911-CA9666446863">
+        <omgdi:waypoint x="1235.0" y="305.0"/>
+        <omgdi:waypoint x="1235.0" y="360.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequence7" id="BPMNEdge_sequence7">
+        <omgdi:waypoint x="1060.0" y="115.0"/>
+        <omgdi:waypoint x="1170.0" y="115.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequence8" id="BPMNEdge_sequence8">
+        <omgdi:waypoint x="1040.0" y="135.0"/>
+        <omgdi:waypoint x="1040.0" y="265.0"/>
+        <omgdi:waypoint x="1185.0" y="265.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequence5" id="BPMNEdge_sequence5">
+        <omgdi:waypoint x="925.0" y="115.0"/>
+        <omgdi:waypoint x="1020.0" y="115.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequence6" id="BPMNEdge_sequence6">
+        <omgdi:waypoint x="1040.0" y="95.0"/>
+        <omgdi:waypoint x="1040.0" y="24.0"/>
+        <omgdi:waypoint x="495.5" y="24.0"/>
+        <omgdi:waypoint x="495.5" y="69.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequence3" id="BPMNEdge_sequence3">
+        <omgdi:waypoint x="547.0" y="112.0"/>
+        <omgdi:waypoint x="590.0" y="112.0"/>
+        <omgdi:waypoint x="590.0" y="115.0"/>
+        <omgdi:waypoint x="645.0" y="115.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequence4" id="BPMNEdge_sequence4">
+        <omgdi:waypoint x="745.0" y="115.0"/>
+        <omgdi:waypoint x="825.0" y="115.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequence1" id="BPMNEdge_sequence1">
+        <omgdi:waypoint x="60.0" y="220.0"/>
+        <omgdi:waypoint x="135.0" y="220.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequence2" id="BPMNEdge_sequence2">
+        <omgdi:waypoint x="235.0" y="220.0"/>
+        <omgdi:waypoint x="360.0" y="220.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-FA19FB0F-CF97-45E6-A3FC-27A245111630" id="BPMNEdge_sid-FA19FB0F-CF97-45E6-A3FC-27A245111630">
+        <omgdi:waypoint x="1285.121096774" y="400.154555900906"/>
+        <omgdi:waypoint x="1545.0000004679707" y="400.08736176700535"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequence11" id="BPMNEdge_sequence11">
+        <omgdi:waypoint x="745.0" y="400.01550428894564"/>
+        <omgdi:waypoint x="1184.8789032260001" y="400.1519044812795"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="ScreeningApproved" id="BPMNEdge_ScreeningApproved">
+        <omgdi:waypoint x="380.0" y="200.0"/>
+        <omgdi:waypoint x="380.0" y="112.0"/>
+        <omgdi:waypoint x="444.0" y="112.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="RejectedScreening" id="BPMNEdge_RejectedScreening">
+        <omgdi:waypoint x="380.0" y="240.0"/>
+        <omgdi:waypoint x="380.0" y="400.0"/>
+        <omgdi:waypoint x="645.0" y="400.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-952907EC-FE12-4D3B-AF5F-E4F010EDC09D" id="BPMNEdge_sid-952907EC-FE12-4D3B-AF5F-E4F010EDC09D">
+        <omgdi:waypoint x="1510.242193548" y="115.0837419355"/>
+        <omgdi:waypoint x="1559.0" y="115.0837419355"/>
+        <omgdi:waypoint x="1559.0" y="386.08374193550003"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-F42528E1-4E00-4EC1-B5F2-AE87AC039841" id="BPMNEdge_sid-F42528E1-4E00-4EC1-B5F2-AE87AC039841">
+        <omgdi:waypoint x="1270.0" y="115.0"/>
+        <omgdi:waypoint x="1410.0" y="115.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
