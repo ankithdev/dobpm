@@ -39,8 +39,9 @@
                    </execution>
                </executions>
            </plugin>
+			</plugins>
 	</build>
-		</plugins>
+		
 
 
 	 	<description>Sample POM</description>
