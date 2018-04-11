@@ -20,7 +20,9 @@
 
 	<dependencies>
 		</dependencies>
-	
+	<build>
+		<plugins>
+
 	 <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-assembly-plugin</artifactId>
@@ -37,9 +39,9 @@
                    </execution>
                </executions>
            </plugin>
-	<build>
-		
 	</build>
+		</plugins>
+
 
 	 	<description>Sample POM</description>
 </project>
