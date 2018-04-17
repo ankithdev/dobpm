@@ -46,6 +46,10 @@ assertEquals(1, taskService.createTaskQuery().count());
 task = taskService.createTaskQuery().singleResult();
 TaskAssert.assertThat(task).hasName("user2").complete();
 
+assertEquals(1, taskService.createTaskQuery().count());
+task = taskService.createTaskQuery().singleResult();
+TaskAssert.assertThat(task).hasName("user3").complete();
+
 ProcessInstanceAssert.assertThat(processInstance).isComplete();
 }
 }
